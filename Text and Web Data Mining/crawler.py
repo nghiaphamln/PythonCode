@@ -1,10 +1,16 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-import modules
 
 
-stop_word = modules.get_stopword()
+def convert_rating(rating):
+    if rating <= 4:
+        return -1
+    elif rating >= 7:
+        return 1
+    else:
+        return 0
+
 
 with open("comments.txt", "w") as write_file:
     count = 0
@@ -25,16 +31,11 @@ with open("comments.txt", "w") as write_file:
                 for i in x["LstReview"]:
                     count += 1
 
-                    print(f"#{i['ReviewId']}\n")
-                    write_file.write(f"#{i['ReviewId']}\n")
-
                     # replace icon with positive and negative
-                    text = modules.replace_icons(i['Comment'].replace('. \n', '. ').replace('.\n', '.').replace('\n', '. ') + "\n")
+                    text = i['Comment'].replace('. \n', '. ').replace('.\n', '.').replace('\n', '. ')
                     # lower string and remove stopword
-                    write_file.write(modules.remove_stopword(text.lower(), stop_word) + "\n")
-
-                    # convert rating to 1, -1, 0
-                    write_file.write(f"{modules.convert_rating(i['AvgRating'])}\n\n")
+                    write_file.write(f"train_{count}\n")
+                    write_file.write(text + "\n" + str(convert_rating(i["AvgRating"])) + "\n\n")
 
             url = file.readline()
 
