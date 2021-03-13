@@ -1,13 +1,16 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+import modules
 
+
+stop_word = modules.get_stopword()
 
 with open("comments.txt", "w") as write_file:
     count = 0
 
     with open("urls.txt", "r") as file:
-        url = file.readline()  # lấy từng url trong urls.txt để lấy đánh giá
+        url = file.readline()
 
         while url:
             response = requests.get(url)
@@ -21,10 +24,17 @@ with open("comments.txt", "w") as write_file:
             for x in dictionary["Items"]:
                 for i in x["LstReview"]:
                     count += 1
+
                     print(f"#{i['ReviewId']}\n")
                     write_file.write(f"#{i['ReviewId']}\n")
-                    write_file.write(i['Comment'].replace('. \n', '. ').replace('.\n', '.').replace('\n', '. ') + "\n")
-                    write_file.write(f"{i['AvgRating']}\n\n")
+
+                    # replace icon with positive and negative
+                    text = modules.replace_icons(i['Comment'].replace('. \n', '. ').replace('.\n', '.').replace('\n', '. ') + "\n")
+                    # lower string and remove stopword
+                    write_file.write(modules.remove_stopword(text.lower(), stop_word) + "\n")
+
+                    # convert rating to 1, -1, 0
+                    write_file.write(f"{modules.convert_rating(i['AvgRating'])}\n\n")
 
             url = file.readline()
 
