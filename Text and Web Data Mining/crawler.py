@@ -42,5 +42,7 @@ with open("comments.txt", "w") as write_file:
                     write_file.write(f'"{comment}"\n')
                     write_file.write(str(convert_rating(float(rating))) + "\n\n")
 
+            url = file.readline()
+
 print(f"Đã lấy được {count} đánh giá!")
 write_file.close()

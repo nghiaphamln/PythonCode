@@ -2,6 +2,7 @@ from __future__ import print_function
 
 import re
 import pandas as pd
+from sklearn.naive_bayes import GaussianNB
 from underthesea import word_tokenize
 import joblib
 from sklearn.metrics import classification_report
@@ -9,6 +10,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import f1_score
 from sklearn.metrics import confusion_matrix
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import LinearSVC
 from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.model_selection import train_test_split
