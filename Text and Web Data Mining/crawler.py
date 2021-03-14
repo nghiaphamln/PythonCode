@@ -35,7 +35,8 @@ with open("comments.txt", "w") as write_file:
                     text = i['Comment'].replace('. \n', '. ').replace('.\n', '.').replace('\n', '. ')
                     # lower string and remove stopword
                     write_file.write(f"train_{count}\n")
-                    write_file.write(text + "\n" + str(convert_rating(i["AvgRating"])) + "\n\n")
+                    write_file.write(f'"{text}"\n')
+                    write_file.write(str(convert_rating(i["AvgRating"])) + "\n\n")
 
             url = file.readline()
 
